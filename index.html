@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アイリスオーヤマ ペルソナ調査 ML分析</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Noto Sans JP', sans-serif;
+    background: #0d1117; color: #c9d1d9; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  .hero {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 60%, #1a237e 100%);
+    padding: 80px 48px 60px; text-align: center; border-bottom: 1px solid #21262d;
+  }
+  .logo { font-size: 48px; margin-bottom: 16px; }
+  .hero h1 { font-size: 30px; color: #f0f6fc; font-weight: 700; margin-bottom: 12px; }
+  .hero p  { color: #8b949e; font-size: 16px; max-width: 600px; margin: 0 auto 32px; }
+  .tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .tag {
+    background: #21262d; border: 1px solid #30363d; border-radius: 20px;
+    padding: 5px 14px; font-size: 12px; color: #7ee787;
+  }
+  .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600;
+    text-decoration: none; transition: all 0.2s; cursor: pointer;
+  }
+  .btn-primary {
+    background: #1f6feb; color: #fff; border: 2px solid #1f6feb;
+  }
+  .btn-primary:hover { background: #388bfd; border-color: #388bfd; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent; color: #79c0ff; border: 2px solid #30363d;
+  }
+  .btn-secondary:hover { border-color: #79c0ff; transform: translateY(-2px); }
+
+  /* Stats section */
+  .stats {
+    display: flex; gap: 0; justify-content: center; flex-wrap: wrap;
+    padding: 40px 48px; border-bottom: 1px solid #21262d;
+  }
+  .stat { text-align: center; padding: 20px 40px; }
+  .stat .num { font-size: 36px; font-weight: 700; color: #1f6feb; }
+  .stat .lbl { font-size: 13px; color: #8b949e; margin-top: 4px; }
+  .stat + .stat { border-left: 1px solid #21262d; }
+
+  /* Cards section */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+           gap: 20px; padding: 48px; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .card {
+    background: #161b22; border: 1px solid #21262d; border-radius: 12px;
+    padding: 28px; transition: border-color 0.2s, transform 0.2s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .card:hover { border-color: #1f6feb; transform: translateY(-4px); }
+  .card-icon { font-size: 32px; margin-bottom: 14px; }
+  .card h3   { font-size: 18px; color: #f0f6fc; margin-bottom: 10px; }
+  .card p    { font-size: 13px; color: #8b949e; line-height: 1.7; }
+  .card-tag  { display: inline-block; margin-top: 14px; font-size: 11px;
+               background: #1f6feb22; color: #79c0ff; border: 1px solid #1f6feb44;
+               padding: 3px 10px; border-radius: 12px; }
+
+  /* Results section */
+  .results { padding: 0 48px 48px; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .results h2 { font-size: 20px; color: #e2e8f0; margin-bottom: 20px;
+                border-left: 4px solid #1f6feb; padding-left: 12px; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .result-card {
+    background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 18px;
+  }
+  .result-card h4 { color: #79c0ff; font-size: 13px; margin-bottom: 8px; }
+  .result-card p  { color: #8b949e; font-size: 12px; }
+  .highlight { color: #f6e05e; font-weight: 700; }
+
+  footer { text-align: center; padding: 24px; color: #4a5568; font-size: 12px; margin-top: auto; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">🏪</div>
+  <h1>アイリスオーヤマ ペルソナ調査<br>機械学習分析システム</h1>
+  <p>50名のブランド親和性・購買行動・価値観データを<br>インタラクティブに可視化し、機械学習で分析します</p>
+  <div class="tags">
+    <span class="tag">📋 n = 50名</span>
+    <span class="tag">❓ 42問</span>
+    <span class="tag">🏷️ 5段階ブランド親和性</span>
+    <span class="tag">🤖 6MLモデル比較</span>
+    <span class="tag">🔍 4クラスタ顧客分析</span>
+  </div>
+  <div class="btn-row">
+    <a href="iris_dashboard.html" class="btn btn-primary">📊 インタラクティブ ダッシュボード</a>
+    <a href="analysis_report.html" class="btn btn-secondary">🤖 ML 分析レポート</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="num">46%</div><div class="lbl">積極的支持者（熱烈ファン＋好意的）</div></div>
+  <div class="stat"><div class="num">58%</div><div class="lbl">Random Forest 分類精度</div></div>
+  <div class="stat"><div class="num">4</div><div class="lbl">顧客セグメント（K-Means）</div></div>
+  <div class="stat"><div class="num">25</div><div class="lbl">機械学習 特徴量数</div></div>
+</div>
+
+<!-- Cards -->
+<div class="cards">
+  <a href="iris_dashboard.html" class="card">
+    <div class="card-icon">📊</div>
+    <h3>インタラクティブ ダッシュボード</h3>
+    <p>Chart.js による動的チャート7種類。ブランド親和性分布・年代別分析・性別・職業・
+    チャネル別ヒートマップ・50名ペルソナカード・セグメント比較を1画面で探索できます。</p>
+    <span class="card-tag">→ iris_dashboard.html</span>
+  </a>
+  <a href="analysis_report.html" class="card">
+    <div class="card-icon">🤖</div>
+    <h3>機械学習 分析レポート</h3>
+    <p>6種類のMLモデル比較（Random Forest / SVM / Logistic Regression など）・
+    特徴量重要度分析・K-Meansクラスタリング・PCA可視化の結果をまとめたレポート。</p>
+    <span class="card-tag">→ analysis_report.html</span>
+  </a>
+  <a href="iris_analysis.py" class="card">
+    <div class="card-icon">🐍</div>
+    <h3>Python ML ソースコード</h3>
+    <p>データ前処理・特徴量エンジニアリング・5-Fold CV評価・クラスタリング・
+    HTML レポート自動生成を含む完全な分析スクリプト（pandas / scikit-learn）。</p>
+    <span class="card-tag">→ iris_analysis.py</span>
+  </a>
+</div>
+
+<!-- Key Results -->
+<div class="results">
+  <h2>🔑 主要分析結果</h2>
+  <div class="result-grid">
+    <div class="result-card">
+      <h4>🎯 最重要特徴量</h4>
+      <p><span class="highlight">購買有無 (buys)</span> が最も識別力が高い。
+      次いで年齢・世帯人数・口コミ推奨・Amazonでの購買行動の順。</p>
+    </div>
+    <div class="result-card">
+      <h4>👥 クラスタ1 — 若年ファン層</h4>
+      <p>平均27.8歳 (12名)。熱烈ファン＋好意的が10/12名。
+      一人暮らし開始・引越しがトリガー。Amazon特化。</p>
+    </div>
+    <div class="result-card">
+      <h4>😤 クラスタ2 — 嫌悪層</h4>
+      <p>平均39.0歳 (12名)。嫌悪10/12名。
+      クリエイター・建築士・高収入層。「映えない・プラスチック感」が核心。</p>
+    </div>
+    <div class="result-card">
+      <h4>👴 クラスタ3 — シニア層</h4>
+      <p>平均70.7歳 (6名)。軽さ・操作シンプル・安全性重視。
+      娘世代経由のテレビ・口コミが情報経路。</p>
+    </div>
+    <div class="result-card">
+      <h4>🏠 クラスタ4 — 中間層</h4>
+      <p>平均43.1歳 (20名)。ファミリー・主婦・会社員が中心。
+      コスパ重視・サブスク需要・スマートホーム関心あり。</p>
+    </div>
+    <div class="result-card">
+      <h4>📦 購買トリガー Top 3</h4>
+      <p>① 一人暮らし開始・引越し<br>
+         ② 出産・育休<br>
+         ③ 離婚・人生の再スタート</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  アイリスオーヤマ ペルソナ調査 ML分析システム | データ: iris_persona_survey_42q.csv (n=50)
+</footer>
+
+</body>
+</html>
